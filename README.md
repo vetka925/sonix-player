@@ -1,35 +1,98 @@
-﻿# Sonix Player
+# Sonix Player · Audiobooks
 
-A replacement player for the **HiBy R3 Pro II** and the **HiBy R1**, written on
-LVGL.
+**A small music player. A better place for your books.**
 
-Everything it can do is in **[FEATURES.md](FEATURES.md)**.
+An audiobook-focused fork of [Sonix Player](https://github.com/Jepl4r/sonix-player)
+for the **HiBy R1**: reliable resume, chapter controls, a sleep timer that fades out,
+and small conveniences that make long books easier to live with.
 
-## Install
+[**Download for HiBy R1**](https://github.com/vetka925/sonix-player-audiobooks/releases/latest) ·
+[What's different](#what-this-fork-adds) · [Install](#install-on-hiby-r1) ·
+[All features](FEATURES.md) · [Original Sonix](https://github.com/Jepl4r/sonix-player)
 
-1. Download the firmware for your player from the
-   **[latest release](https://github.com/Jepl4r/sonix-player/releases/latest)**:
-   `r3proii.upt` for the R3 Pro II, `r1.upt` for the R1. **Never the other
-   one**: the update does not check which player it is given.
-2. Charge the player **above 30%**.
-3. Copy the `.upt` file to the **root of the microSD card** and put the card
-   in the player.
-4. Start the update:
-   - **from the stock firmware** - use its firmware update from the microSD
-     card.
-   - **from Sonix Player** - Settings > System > Update firmware > From SD
-     card.
-5. Let it flash: it says "Upgrading...", then "Succeeded", and reboots by
-   itself.
+<table>
+<tr>
+<td align="center"><img src="screenshots/now-playing.png" width="240" alt="Audiobook playback with chapter buttons, whole-book progress, bookmark, speed and sleep controls"><br><b>Your place in the book</b></td>
+<td align="center"><img src="screenshots/sleep-timer.png" width="240" alt="Sleep timer presets accessible from the playback screen"><br><b>Ready for bedtime</b></td>
+<td align="center"><img src="screenshots/audiobook-settings.png" width="240" alt="Audiobook settings with rewind after pause and a separate Vocal equalizer preset"><br><b>Set it up for listening</b></td>
+</tr>
+</table>
 
-Once Sonix Player is installed, later versions can be installed straight from
-the player: Settings > System > Update firmware > Via internet downloads the
-right file from the latest release by itself.
+*Actual screenshots from the desktop simulator at the HiBy R1's 480 × 800 resolution,
+using sample books. These are interface captures, not photos of the device.*
 
-> **Going back to the stock firmware:** flash the original firmware from
-> HiBy's website the same way.
+## Why this exists
 
----
+I wanted a compact player for offline music and audiobooks, with good sound and
+Bluetooth, without carrying another phone. The HiBy R1 fit the hardware side.
+Sonix provided an open-source foundation I could adapt to how I listen.
+
+With Codex and Claude Code, I could work on those improvements alongside my regular
+job: describe an inconvenience, work through a change, try it, and refine it.
+This fork shares the result with other listeners.
+
+## What this fork adds
+
+Sonix already supports audiobooks, bookmarks, playback speed, embedded chapters,
+and books stored as folders. This fork builds on that work:
+
+| While listening | What changes |
+| --- | --- |
+| **Keep your place** | Fixes for resume positions during book switches and library rescans. Books finish at the natural end, not before the final words. |
+| **Move between chapters** | Chapter title and number, previous/next buttons on the player screen, and remappable physical-button actions. Paused chapter changes stay paused. |
+| **Pick a pace for each book** | Playback speed is remembered per book, from 0.5× to 2×. |
+| **Hear speech your way** | A separate graphic-EQ choice for books; your music settings return when you switch back. PEQ and MSEB stay unchanged. |
+| **Fall asleep listening** | A visible countdown, quick timer presets, and a 20-second fade-out. Resume starts from the beginning of the fade. |
+| **Get back into the story** | Optional rewind after a break, with a longer rewind after a longer pause. |
+| **Undo an accidental jump** | Return to the position before a chapter change, bookmark jump, or progress-bar seek. |
+| **See how much is left** | Whole-book progress and remaining listening time at the current speed, including folder books when part lengths are known. Missing lengths can be calculated in the background. |
+| **Save a passage** | Tap the bookmark button on Now Playing; hold it to open your bookmarks. |
+
+Also includes fixes for Cyrillic grouping, ID3 chapter titles, and update attempts
+when the memory card is unavailable. See [FEATURES.md](FEATURES.md) for the full player.
+
+## Install on HiBy R1
+
+**This release is for the HiBy R1 only.** The owner has confirmed the build works
+on their R1. The codebase also supports the R3 Pro II, but this fork's release has
+not been device-tested on that model and does not include an R3 Pro II image.
+
+1. Open the [latest release](https://github.com/vetka925/sonix-player-audiobooks/releases/latest)
+   and download **r1.upt**. Optional: verify it against **SHA256SUMS.txt**.
+2. Back up your card, including hidden folders, and charge the player above 30%.
+3. Copy **r1.upt** to the root of the microSD card.
+4. From Sonix, choose **Settings → System → Update firmware → From SD card**.
+   From stock HiBy firmware, use its firmware update from the microSD card.
+5. Let the update finish and the player restart. Do not interrupt it.
+
+This build is intended for local music and audiobooks. It ships without streaming
+service keys; Tidal, Qobuz, podcast search, and Last.fm integration are not configured.
+
+Put books in **Audiobooks/** on the card, then scan the audiobook library.
+A book can be a single file, such as M4B, or a folder of audio files.
+
+> **Updates:** the built-in internet updater still defaults to the original Sonix
+> repository. To keep these fork-specific features, install this fork's release
+> from the SD card. An upstream release may replace them.
+
+## Feedback and credits
+
+Found a problem? [Open an issue](https://github.com/vetka925/sonix-player-audiobooks/issues)
+with the release version, player model, book format, and steps to reproduce it.
+Please keep private recordings and account details out of reports.
+
+Thank you to **[Jepl4r](https://github.com/Jepl4r)** and all Sonix contributors.
+The original player, music features, firmware tooling, and audiobook foundation
+are their work. This is an independent fork, not an official HiBy release.
+The original [GPL-3.0 license](LICENSE) and contributor credits are preserved.
+
+## Build and technical reference
+
+The original build instructions and technical reference are retained below.
+For this fork's additional regression checks, see [tests/README.md](tests/README.md).
+
+<details>
+<summary><b>Expand build instructions, supported hardware, and upstream credits</b></summary>
 
 ## Supported players
 
@@ -425,12 +488,12 @@ the overlay - any other file need to be in the respective folder mirroring the r
    - **from the stock firmware** - use its firmware update from the microSD
      card.
    - **from Sonix Player** - Settings > System > Update firmware > From SD
-     card. *Via internet* downloads the right image from the latest release by
-     itself.
+     card. For this fork, use the downloaded R1 image; the default
+     *Via internet* source is the original Sonix project.
 4. Let it flash - it will say "Upgrading..." then "Succeeded" and reboot by itself.
 
 > It is recommended to **charge above 30%** first. 
-**Recovery from a failed flash:** If something goes wrong, you can always restore by flashing the original stock firmware from HiBy's website using the same procedure.
+**Returning to stock:** use the original firmware for your exact model from HiBy. Recovery after an interrupted or failed flash may require the device recovery procedure.
 
 
 ## Generated files
@@ -567,3 +630,5 @@ sonix-player/
 [@hkhrithik007](https://github.com/hkhrithik007)
 
 and all the members of this fantastic community!!
+
+</details>
